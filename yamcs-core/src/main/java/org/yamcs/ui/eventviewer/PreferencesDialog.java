@@ -10,6 +10,8 @@ import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
@@ -22,7 +24,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
@@ -380,7 +381,12 @@ public class PreferencesDialog extends JDialog implements ActionListener {
         this.setContentPane(getJContentPane());
         this.setTitle("Preferences");
         
-        this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE) ;
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+            	eventViewer.getFilteringRulesTable().doNotifyAllObservers();
+            }
+        });
     }
 
     /**
@@ -423,7 +429,7 @@ public class PreferencesDialog extends JDialog implements ActionListener {
             activeColumn.setCellEditor(new DefaultCellEditor(checkBox));
 
             // Set up the editor for the severity cells
-            JComboBox comboBox = new JComboBox();
+            JComboBox<String> comboBox = new JComboBox<>();
             comboBox.addItem("Info");
             comboBox.addItem("Warning");
             comboBox.addItem("Error");
@@ -434,7 +440,7 @@ public class PreferencesDialog extends JDialog implements ActionListener {
             severityColumn.setCellEditor(new DefaultCellEditor(comboBox));         
             
             // Set up the editor for the alert cells
-            comboBox = new JComboBox();
+            comboBox = new JComboBox<>();
             comboBox.addItem("Sound");
             comboBox.addItem("PopUp");
             comboBox.addItem("None");
@@ -448,7 +454,7 @@ public class PreferencesDialog extends JDialog implements ActionListener {
             alertColumn.setCellRenderer(renderer);
 
             // Set up the editor for the alert cells
-            comboBox = new JComboBox();
+            comboBox = new JComboBox<>();
             comboBox.addItem("Yes");
             comboBox.addItem("No");
 
