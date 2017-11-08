@@ -346,6 +346,7 @@ public class EventViewer extends JFrame implements ActionListener, ItemListener,
 
         tableSorter = new TableRowSorter<EventTableModel>(tableModel);
         eventTable.setRowSorter(tableSorter);
+        
 
         final TableColumnModel tcm = eventTable.getColumnModel();
         tcm.getColumn(eventTable.convertColumnIndexToView(EventTableModel.SOURCE_COL)).setMaxWidth(200);
@@ -455,7 +456,8 @@ public class EventViewer extends JFrame implements ActionListener, ItemListener,
             if (e.getClickCount() == 2) {
                 JTable target = (JTable) e.getSource();
                 int row = target.getSelectedRow();
-                showEventInDetailDialog(((EventTableModel)target.getModel()).getEvent(row));
+                showEventInDetailDialog(((EventTableModel)target.getModel())
+                		.getEvent(eventTable.convertRowIndexToModel(row)));
             }
         }
 
@@ -581,7 +583,8 @@ public class EventViewer extends JFrame implements ActionListener, ItemListener,
 
             getPreferencesDialog().setVisible(true);
         } else if (cmd.equals("show_event_details")) {
-            showEventInDetailDialog(((EventTableModel)eventTable.getModel()).getEvent(eventTable.getSelectedRow()));
+            showEventInDetailDialog(((EventTableModel)eventTable.getModel())
+            		.getEvent(eventTable.convertRowIndexToModel(eventTable.getSelectedRow())));
         }
     }
 
@@ -630,14 +633,15 @@ public class EventViewer extends JFrame implements ActionListener, ItemListener,
     }
 
     void clearTable() {
-        tableModel.clear();
+        
         eventCount = 0;
         warningCount = 0;
         errorCount = 0;
+        tableModel.clear();
         labelEventCount.setText(String.valueOf(eventCount));
         labelWarnings.setText(String.valueOf(warningCount));
         labelErrors.setText(String.valueOf(errorCount));
-        eventTable.repaint();
+        eventTable.updateUI();
     }
 
     void showMessage(String msg) {
