@@ -194,8 +194,10 @@ class EventTableModel extends AbstractTableModel implements Observer {
     public void clear()
     {
         fireTableRowsDeleted(0, getRowCount()-1);
-        allEvents.clear();
         visibleEvents.clear();
+        allEvents.clear();
+        fireTableDataChanged();
+        
     }
 
     /**
