@@ -51,7 +51,6 @@ public class TcpTcDataLinkTest {
       while(true) {
         try {
           DataInputStream in = new DataInputStream(server.getInputStream());
-          while(in.available() <= 0) {}
           byte hdr[] = new byte[6];
           in.readFully(hdr);
           int remaining=((hdr[4]&0xFF)<<8)+(hdr[5]&0xFF)+1;

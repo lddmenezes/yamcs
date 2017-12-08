@@ -70,9 +70,6 @@ public class Simulator extends Thread {
    */
   protected CCSDSPacket readPacket(DataInputStream dIn) {
     try {
-      while(dIn.available() <= 0) {
-        ; //TODO blocking
-      }
       
         byte hdr[] = new byte[6];
         dIn.readFully(hdr);
